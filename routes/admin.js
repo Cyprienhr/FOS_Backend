@@ -138,6 +138,11 @@ router.get('/metrics', authMiddleware, verifyAdmin, async (req, res) => {
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     const weeklyOrders = await Order.countDocuments({ createdAt: { $gte: weekAgo } });
 
+    // Calculate rates as percentages (two decimal places)
+    const approvalRate = totalOrders > 0 ? ((approvedOrders / totalOrders) * 100).toFixed(2) : '0.00';
+    const declinedRate = totalOrders > 0 ? ((declinedOrders / totalOrders) * 100).toFixed(2) : '0.00';
+    const pendingRate = totalOrders > 0 ? ((pendingOrders / totalOrders) * 100).toFixed(02) : '0.00';
+
     res.json({
       metrics: {
         totalOrders,
@@ -145,7 +150,9 @@ router.get('/metrics', authMiddleware, verifyAdmin, async (req, res) => {
         declinedOrders,
         pendingOrders,
         weeklyOrders,
-        approvalRate: totalOrders > 0 ? ((approvedOrders / totalOrders) * 100).toFixed(2) : 0
+        approvalRate,
+        declinedRate,
+        pendingRate
       }
     });
   } catch (error) {
