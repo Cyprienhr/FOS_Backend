@@ -141,7 +141,7 @@ router.get('/metrics', authMiddleware, verifyAdmin, async (req, res) => {
     // Calculate rates as percentages (two decimal places)
     const approvalRate = totalOrders > 0 ? ((approvedOrders / totalOrders) * 100).toFixed(2) : '0.00';
     const declinedRate = totalOrders > 0 ? ((declinedOrders / totalOrders) * 100).toFixed(2) : '0.00';
-    const pendingRate = totalOrders > 0 ? ((pendingOrders / totalOrders) * 100).toFixed(02) : '0.00';
+    const pendingRate = totalOrders > 0 ? ((pendingOrders / totalOrders) * 100).toFixed(2) : '0.00';
 
     res.json({
       metrics: {
